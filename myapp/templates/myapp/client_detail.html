@@ -1,0 +1,54 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Details for {{ client.company_name }}</h1>
+
+    <h2>Client Information</h2>
+    <ul>
+        <li>First Name: {{ client.first_name }}</li>
+        <li>Last Name: {{ client.last_name }}</li>
+        <li>Email: {{ client.email }}</li>
+        <li>Phone: {{ client.phone }}</li>
+        <li>Address: {{ client.address }}</li>
+        <!-- Add any other client details here -->
+    </ul>
+
+ <h2>Projects</h2>
+    <ul>
+        {% for project in projects %}
+        <li>{{ project.name }} - {{ project.status }}
+            <!-- Edit and Delete buttons for each project -->
+            <a href="{% url 'edit_project' project.id %}" class="btn btn-warning btn-sm">Edit</a>
+            <a href="{% url 'delete_project' project.id %}" class="btn btn-danger btn-sm">Delete</a>
+        </li>
+        {% empty %}
+        <li>No projects found for this client.</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Add Project Button -->
+    <a href="{% url 'add_project' client.id %}" class="btn btn-primary">Add Project</a>
+
+
+    <h2>Employees</h2>
+    <ul>
+        {% for employee in employees %}
+        <li>{{ employee.first_name }} {{ employee.last_name }} - {{ employee.role }}
+            <!-- Edit and Delete buttons for each employee -->
+            <a href="{% url 'edit_employee' employee.id %}" class="btn btn-warning btn-sm">Edit</a>
+            <a href="{% url 'delete_employee' employee.id %}" class="btn btn-danger btn-sm">Delete</a>
+        </li>
+        {% empty %}
+        <li>No employees found for this client.</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Add Employee Button -->
+    <a href="{% url 'add_employee' client.id %}" class="btn btn-primary">Add Employee</a>
+
+    <!-- Back to Client List Button -->
+    <a href="{% url 'client_list' %}" class="btn btn-secondary">Back to Client List</a>
+
+</div>
+{% endblock %}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deleted Business Details</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom styles -->
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 15px;
+            position: fixed;
+            height: 100%;
+        }
+        .sidebar a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .table-responsive {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h4>CRM Menu</h4>
+        <a href="{% url 'base' %}"><i class="fas fa-briefcase"></i> Business</a>
+        <a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="{% url 'calendar' %}"><i class="fas fa-calendar"></i> Calendar</a>
+        <a href="{% url 'client_list' %}"><i class="fas fa-address-book"></i> Clients</a>
+        <a href="#"><i class="fas fa-user"></i> Projects</a>
+        <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="container-fluid">
+            <h1 class="h3 mb-4 text-gray-800">Deleted Business Details</h1>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>SL</th>
+                            <th>Batch Type</th>
+                            <th>Order No</th>
+                            <th>Received On</th>
+                            <th>Borrower Name 1</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for detail in deleted_base %}
+                        <tr>
+                            <td>{{ detail.sl }}</td>
+                            <td>{{ detail.batch_type }}</td>
+                            <td>{{ detail.order_no }}</td>
+                            <td>{{ detail.received_on }}</td>
+                            <td>{{ detail.borrower_name_1 }}</td>
+                            <td>
+                                <a href="{% url 'restore_business_detail' detail.pk %}" class="btn btn-success btn-sm" onclick="return confirm('Are you sure you want to restore this business detail?');">Restore</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <a href="{% url 'base' %}" class="btn btn-primary mt-3">Back to Business Details</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

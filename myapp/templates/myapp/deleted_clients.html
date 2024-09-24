@@ -1,0 +1,19 @@
+{% extends "myapp/base.html" %}
+
+{% block content %}
+<h2>Deleted Clients</h2>
+<a href="{% url 'client_list' %}" class="btn btn-primary mb-3">Back to Clients</a>
+<div class="row">
+    {% for client in deleted_clients %}
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">{{ client.first_name }} {{ client.last_name }}</h5>
+                <p class="card-text">{{ client.phone }}<br>{{ client.email }}</p>
+                <a href="{% url 'restore_client' client.pk %}" class="btn btn-success">Restore</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

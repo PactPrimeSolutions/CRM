@@ -1,0 +1,14 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Add New Client</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Add Client</button>
+        <a href="{% url 'client_list' %}" class="btn btn-secondary mt-3">Back to Client List</a>
+    </form>
+</div>
+{% endblock %}

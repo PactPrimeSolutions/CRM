@@ -7,7 +7,28 @@
 
 /* Custom CSS to resize the logo on the login page */
 .login-logo img {
-    width: 150px; /* Adjust as needed */
+    width: 20px; /* Adjust as needed */
     height: auto; /* Maintain aspect ratio */
-    max-height: 100px; /* Set a max height */
+    max-height: 30px; /* Set a max height */
+}
+
+/* Custom styles for the form */
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+h2 {
+    color: #333;
+    font-weight: 700;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
 }

@@ -1,0 +1,15 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>{% if project %}Edit Project{% else %}Add Project{% endif %}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+
+    <a href="{% url 'client_detail' client.id %}" class="btn btn-secondary">Back to Client Details</a>
+</div>
+{% endblock %}

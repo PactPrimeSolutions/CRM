@@ -1,0 +1,12 @@
+# Auto-detect text files and normalize line endings
+* text=auto
+
+# Ensure that binary files don't get altered
+*.png binary
+*.jpg binary
+*.gif binary
+*.pdf binary
+*.zip binary
+
+# Handle specific files or folders
+node_modules/* -text

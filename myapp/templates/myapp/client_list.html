@@ -1,0 +1,69 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Client List</h1>
+
+    <!-- Add Client Button -->
+    <a href="{% url 'add_client' %}" class="btn btn-primary mb-3">Add New Client</a>
+
+    <!-- Table for Active Clients -->
+    <h2>Active Clients</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Company Name</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in active_clients %}
+            <tr>
+                <td><a href="{% url 'client_detail' client.id %}">{{ client.company_name }}</a></td>
+                <td>{{ client.first_name }}</td>
+                <td>{{ client.last_name }}</td>
+                <td>{{ client.email }}</td>
+                <td>{{ client.phone }}</td>
+                <td>
+                    <a href="{% url 'edit_client' client.id %}" class="btn btn-warning">Edit</a>
+                    <a href="{% url 'delete_client' client.id %}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Table for Deleted Clients -->
+    <h2>Deleted Clients</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Company Name</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in deleted_clients %}
+            <tr>
+                <td><a href="{% url 'client_detail' client.id %}">{{ client.company_name }}</a></td>
+                <td>{{ client.first_name }}</td>
+                <td>{{ client.last_name }}</td>
+                <td>{{ client.email }}</td>
+                <td>{{ client.phone }}</td>
+                <td>
+                    <a href="{% url 'restore_client' client.id %}" class="btn btn-success">Restore</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
