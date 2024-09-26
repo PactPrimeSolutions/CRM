@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Details Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+     <!-- Include Select2 CSS -->
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    
+     <!-- Include jQuery -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+     
+     <!-- Include Select2 JS -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    
+
+     <style>
+        /* Optional: Custom styles */
+        .select2-container {
+            width: 100% !important;  /* Ensures Select2 takes full width */
+        }
+    </style>
+
+</head>
+
+
+
+
+<body>
+    <div class="container mt-5">
+        <h2>Business Details Form</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save</button>
+        </form>
+        
+    </div>
+
+
+
+    <script>
+        // Initialize Select2 for the client dropdown
+        $(document).ready(function() {
+            $('#id_client').select2(); // Ensure this matches your client field's ID
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<h1>Client Business Details</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for client in clients %}
+    <tr>
+      <td>{{ client.name }}</td>
+      <td><a href="{% url 'client_business_detail' client.id %}">View Business Details</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

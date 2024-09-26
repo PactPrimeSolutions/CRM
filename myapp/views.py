@@ -24,17 +24,15 @@ from django.http import JsonResponse
 from .models import County
 
 def base_view(request):
-    """ View to handle the display and creation of business details """
+    """View to handle the display and creation of business details"""
     if request.method == "POST":
         form = BusinessDetailsForm(request.POST)
         if form.is_valid():
             form.save()
-            logger.info('BusinessDetails saved successfully')
             messages.success(request, "Business details saved successfully!")
-            return redirect('base')
+            return redirect('base')  # Redirect after successful save
         else:
             messages.error(request, "Please correct the errors below.")
-            logger.error(f'Form errors: {form.errors}')
     else:
         form = BusinessDetailsForm()
 
@@ -432,8 +430,3 @@ def delete_project(request, project_id):
     client_id = project.client.id
     project.delete()
     return redirect('client_detail', client_id=client_id)
-
-
-
-
-

@@ -33,6 +33,10 @@
                     <a href="{% url 'delete_client' client.id %}" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No active clients found.</td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
@@ -61,6 +65,10 @@
                 <td>
                     <a href="{% url 'restore_client' client.id %}" class="btn btn-success">Restore</a>
                 </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No deleted clients found.</td>
             </tr>
             {% endfor %}
         </tbody>

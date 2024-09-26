@@ -1,4 +1,3 @@
-# myapp/models.py
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -15,12 +14,11 @@ class BusinessDetails(models.Model):
         ('cancelled', 'Cancelled'),
         ('Clarification', 'Clarification'),
     ]
-
+    client = models.ForeignKey('Client', on_delete=models.CASCADE, related_name='business_details', null=True, blank=True)
     received_on = models.DateField(null=True, blank=True)
-    #Origination_date = models.DateField(null=True, blank=True)
     assigned_on = models.DateField(null=True, blank=True)
     completed_on = models.DateField(null=True, blank=True)
-    sl = models.IntegerField(blank=True, null=True,unique=True)
+    sl = models.IntegerField(blank=True, null=True)
     batch_type = models.CharField(max_length=100, blank=True)
     order_no = models.CharField(max_length=100, blank=True)
     borrower_name_1 = models.CharField(max_length=255, blank=True)
@@ -36,7 +34,7 @@ class BusinessDetails(models.Model):
     typing = models.CharField(max_length=100, blank=True)
     order = models.CharField(max_length=100, blank=True)
     Qcer = models.CharField(max_length=100, blank=True)
-    is_deleted = models.BooleanField(default=False)  # Field to mark deletion
+    is_deleted = models.BooleanField(default=False)
 
     status = models.CharField(
         max_length=20,
@@ -52,14 +50,16 @@ class BusinessDetails(models.Model):
         verbose_name_plural = _("Business Details")
         ordering = ['received_on']
 
-
+    
+    # Overriding the save method
     def save(self, *args, **kwargs):
-        if not self.pk:  # If new instance
+        if not self.pk:  # If this is a new instance
+            # Get the highest `sl` value from existing records (excluding deleted ones)
             last_instance = BusinessDetails.objects.exclude(is_deleted=True).order_by('-sl').first()
-            if last_instance:
+            if last_instance and last_instance.sl:  # Check if there's any existing record
                 self.sl = last_instance.sl + 1
             else:
-                self.sl = 1
+                self.sl = 1  # If no records exist, start from 1
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -68,6 +68,7 @@ class BusinessDetails(models.Model):
     def delete(self, using=None, keep_parents=False):
         self.is_deleted = True
         self.save()
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -79,14 +80,17 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'
 
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
 
+
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
 
 class Event(models.Model):
     title = models.CharField(max_length=200)
@@ -97,6 +101,7 @@ class Event(models.Model):
     def __str__(self):
         return self.title
 
+
 class Client(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -104,11 +109,11 @@ class Client(models.Model):
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
-    deleted = models.BooleanField(default=False) # Soft delete field
+    deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
-    deleted = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
+
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
@@ -117,8 +122,6 @@ class Client(models.Model):
         verbose_name_plural = _("Clients")
         ordering = ['first_name']
 
-
-# models.py
 
 class State(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -135,10 +138,8 @@ class County(models.Model):
         return f"{self.name}, {self.state.name}"
 
 
-
-
 class Project(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='projects')
+    client = models.ForeignKey('Client', on_delete=models.CASCADE, related_name='projects')  # String reference to avoid circular import
     name = models.CharField(max_length=255)
     description = models.TextField()
     status = models.CharField(max_length=100)  # e.g., "In Progress", "Completed"
@@ -148,8 +149,9 @@ class Project(models.Model):
     def __str__(self):
         return f'{self.name} - {self.client.company_name}'
 
+
 class Employee(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='employees')
+    client = models.ForeignKey('Client', on_delete=models.CASCADE, related_name='employees')  # String reference to avoid circular import
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     role = models.CharField(max_length=255)  # e.g., "Developer", "Manager"

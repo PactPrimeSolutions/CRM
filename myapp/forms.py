@@ -11,6 +11,7 @@ class CurrencyInput(forms.NumberInput):
 
 # Form for BusinessDetails model
 class BusinessDetailsForm(forms.ModelForm):
+    client = forms.ModelChoiceField(queryset=Client.objects.filter(is_deleted=False), label="Select Client")
     # Add empty labels for better UX
     state = forms.ModelChoiceField(
         queryset=State.objects.all(), 

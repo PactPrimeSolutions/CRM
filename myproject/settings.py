@@ -38,6 +38,7 @@ DEFAULT_APPS = [
     'django.contrib.staticfiles',
     'myapp',
     'django.contrib.humanize',
+    'django_select2',
 ]
 
 THIRD_PARTY_APPS = []

@@ -1,0 +1,29 @@
+<h1>Business Details for {{ client.name }}</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Detail Key</th>
+      <th>Detail Value</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for detail in business_details %}
+    <tr>
+      <td>{{ detail.detail_key }}</td>
+      <td>{{ detail.detail_value }}</td>
+      <td><a href="{% url 'delete_business_detail' client.id detail.id %}">Delete</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3>Add New Business Detail</h3>
+<form method="post">
+  {% csrf_token %}
+  <label>Key:</label>
+  <input type="text" name="detail_key">
+  <label>Value:</label>
+  <input type="text" name="detail_value">
+  <button type="submit">Add</button>
+</form>
